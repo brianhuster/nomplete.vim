@@ -3,13 +3,10 @@
 ==============================================================================
 GIỚI THIỆU                                         *nomplete-introduction*
 
-nomplete.vim là một plugin Vim giúp bạn dễ dàng nhập chữ Nôm (Hán-Nôm) bằng
-cách gõ âm Hán Việt tương ứng. Plugin cung cấp danh sách các ký tự Nôm phù
-hợp để bạn chọn lựa thông qua chức năng hoàn tất (completion) của Vim.
-
-Chữ Nôm là hệ thống chữ viết cổ của người Việt, dựa trên chữ Hán và được
-sử dụng rộng rãi từ thế kỷ 13 đến đầu thế kỷ 20. Plugin này giúp việc nghiên
-cứu và sử dụng chữ Nôm trở nên dễ dàng hơn trong môi trường soạn thảo Vim.
+nomplete.vim là một plugin cho Vim và Neovim giúp bạn dễ dàng nhập chữ Nôm
+(Hán-Nôm) bằng cách gõ âm đọc bằng chữ quốc ngữ tương ứng. Plugin cung cấp
+danh sách các ký tự Nôm phù hợp để bạn chọn lựa thông qua chức năng hoàn tất
+|complete| của Vim.
 
 ==============================================================================
 SỬ DỤNG                                                  *nomplete-usage*
@@ -31,10 +28,6 @@ Quy trình sử dụng cơ bản ~
    |nomplete-configuration|)
 4. Danh sách các ký tự Nôm tương ứng sẽ xuất hiện, chắng hạn với "việt" là
    越, 鉞, ...
-
-==============================================================================
-VẤN ĐỀ ĐÃ BIẾT                                         *nomplete-known-issues*
-- Hiện tại file từ điển của plugin mới chỉ có chữ Hán, do đó bạn chỉ có thể gõ được chữ Hán
 
 ==============================================================================
 vim:tw=78:ts=8:ft=help:norl:
