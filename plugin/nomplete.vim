@@ -1,7 +1,7 @@
-if exists('g:loaded_nomit')
+if exists('g:loaded_nomplete')
 	finish
 endif
-let g:loaded_nomit = 1
+let g:loaded_nomplete = 1
 
 let s:data_file = expand("<script>:p:h:h") . '/dict.json'
 let s:chunom_dict = {}
@@ -19,11 +19,24 @@ function! s:load_data() abort
 	endtry
 endfunction
 
+func! s:normalize(word) abort
+	let word = tolower(a:word)
+
+	let uy_dict = {"úy": "uý", "ùy": "uỳ", "ủy": "uỷ", "ũy": "uỹ", "ụy": "uỵ"}
+	let wordlen = strcharlen(word)
+	let word_uy_part = strcharpart(word, wordlen - 2, 2)
+	if has_key(uy_dict, word_uy_part)
+		return strcharpart(word, 0, wordlen - 2) .. uy_dict[word_uy_part]
+	else
+		return word
+	endif
+endfunc
+
 function! s:get_current_word() abort
 	return getline('.')
 		\ ->strpart(0, col('.') - 1)
 		\ ->matchstr('\v([[:lower:][:upper:]]+)$')
-		\ ->tolower()
+		\ ->s:normalize()
 endfunction
 
 function! s:complete_chunom() abort
