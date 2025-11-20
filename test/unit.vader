@@ -1,0 +1,9 @@
+Execute (normalizing);
+	AssertEqual nomplete#normalize("tÙy"), "tuỳ"
+	AssertEqual nomplete#normalize("lụy"), "luỵ"
+	AssertEqual nomplete#normalize("THúy"), "thuý"
+	AssertEqual nomplete#normalize("thủY"), "thuỷ"
+	AssertEqual nomplete#normalize("LŨY"), "luỹ"
+
+Execute (chuNom);
+	AssertEqual nomplete#quocNgu2chuNom("Việt"), ["越", "樾", "粵", "鉞", "戉"]

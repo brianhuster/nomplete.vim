@@ -6,18 +6,14 @@ let g:loaded_nomplete = 1
 let s:data_file = expand("<script>:p:h:h") . '/dict.json'
 let s:chunom_dict = {}
 
-function! s:load_data() abort
+func! s:load_data() abort
 	if !filereadable(s:data_file)
 		echoerr 'Không tìm thấy ' . s:data_file
 		return
 	endif
-	try
-		let json_text = join(readfile(s:data_file), "\n")
-		let s:chunom_dict = json_decode(json_text)
-	catch /^Vim\%((\a\+)\)\=:E/
-		echoerr 'Lỗi khi đọc JSON!'
-	endtry
-endfunction
+	let json_text = readfile(s:data_file)->join("\n")
+	let s:chunom_dict = json_decode(json_text)
+endfunc
 
 func! s:normalize(word) abort
 	let word = tolower(a:word)
@@ -32,29 +28,50 @@ func! s:normalize(word) abort
 	endif
 endfunc
 
-function! s:get_current_word() abort
-	return getline('.')
-		\ ->strpart(0, col('.') - 1)
+func! s:get_current_word() abort
+	let line = getline('.')
+	let word = line->strpart(0, col('.') - 1)
 		\ ->matchstr('\v([[:lower:][:upper:]]+)$')
 		\ ->s:normalize()
-endfunction
+	if empty(word)
+		" get the last character in line
+		let word = line->strpart(col('.') - 2, 1)
+	endif
+	return word
+endfunc
 
-function! s:complete_chunom() abort
+func! s:quocNgu2chuNom(word) abort
+	let word = s:normalize(a:word)
+
 	if empty(s:chunom_dict)
 		call s:load_data()
 	endif
+	if !has_key(s:chunom_dict, word)
+		echo "Không có chữ Nôm cho '" . word . "'"
+		return
+	endif
+
+	return s:chunom_dict[word]
+endfunc
+
+if v:testing
+	func! nomplete#normalize(word) abort
+		return s:normalize(a:word)
+	endfunc
+
+	func! nomplete#quocNgu2chuNom(word) abort
+		return s:quocNgu2chuNom(a:word)
+	endfunc
+endif
+
+func! s:complete_chunom() abort
 	let word = s:get_current_word()
 	if empty(word)
 		echo 'Không tìm thấy âm tiết hợp lệ'
 		return
 	endif
 
-	if !has_key(s:chunom_dict, word)
-		echo "Không có chữ Nôm cho '" . word . "'"
-		return
-	endif
-
-	let chars = s:chunom_dict[word]
+	let chars = s:quocNgu2chuNom(word)
 	if empty(chars)
 		echo "Không có chữ Nôm cho '" . word . "'"
 		return
@@ -67,6 +84,6 @@ function! s:complete_chunom() abort
 
 	let startcol = col('.') - len(word)
 	call complete(startcol, items)
-endfunction
+endfunc
 
 inoremap <silent> <Plug>(nomplete) <Cmd>call <SID>complete_chunom()<CR>

@@ -1,19 +1,15 @@
-PYTHON ?= python3
-
-.PHONY: test
+VIM_PATH ?= vim
 
 ifeq ($(OS),Windows_NT)
-  PIP := .venv/Scripts/pip.exe
-  PYTEST := .venv/Scripts/pytest.exe
+  NUL := NUL
 else
-  PIP := .venv/bin/pip
-  PYTEST := .venv/bin/pytest
+  NUL := /dev/null
 endif
 
-.venv/touchfile: test/requirements.txt
-	$(PYTHON) -m venv .venv
-	$(PIP) install -r test/requirements.txt
-	touch .venv/touchfile
+.PHONY: vader.vim test
 
-test: .venv/touchfile
-	$(PYTEST) test
+vader:
+	git clone --depth=1 https://github.com/junegunn/vader.vim.git || true
+
+test: vader
+	$(VIM_PATH) -Nu test/vimrc -c 'silent Vader! test/*' > $(NUL)

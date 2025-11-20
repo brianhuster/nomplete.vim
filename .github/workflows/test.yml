@@ -4,31 +4,29 @@ on: [push, pull_request]
 
 jobs:
   test_lua_jit:
-    name: Test on ${{ matrix.os }} with Neovim ${{ matrix.nvim_version }}
+    name: Test on ${{ matrix.os }} with ${{ fromJSON(matrix.editor_version).editor }} ${{ fromJSON(matrix.editor_version).version }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os:
+          - ubuntu-latest
+          # - windows-latest
+          # - macos-latest
         editor_version:
           - '{"editor": "nvim", "version": "stable"}'
           - '{"editor": "nvim", "version": "nightly"}'
-          - '{"editor": "vim", "version": "8.2"}'
           - '{"editor": "vim", "version": "stable"}'
       fail-fast: false
 
     steps:
     - uses: actions/checkout@v5
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: 3.12
 
     - name: Set up Neovim
       uses: rhysd/action-setup-vim@v1
       with:
-        neovim: ${{ fromJSON(matrix.editor_version).editor == "nvim" }}
-        version: ${{ matrix.editor_version }}
+        neovim: ${{ fromJSON(matrix.editor_version).editor == 'nvim' }}
+        version: ${{ fromJSON(matrix.editor_version).version }}
 
     - name: Run tests
-      run: make test
+      run: make test VIM_PATH=${{ fromJSON(matrix.editor_version).editor }}
