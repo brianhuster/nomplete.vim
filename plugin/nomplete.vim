@@ -18,11 +18,15 @@ endfunc
 func! s:normalize(word) abort
 	let word = tolower(a:word)
 
-	let uy_dict = {"úy": "uý", "ùy": "uỳ", "ủy": "uỷ", "ũy": "uỹ", "ụy": "uỵ"}
+	let tone_dict = {
+		\ "úy": "uý", "ùy": "uỳ", "ủy": "uỷ", "ũy": "uỹ", "ụy": "uỵ",
+		\ "óa": "oá", "òa": "oà", "ỏa": "oả", "õa": "oã", "ọa": "oạ",
+		\ "óe": "oé", "òe": "oè", "ỏe": "oẻ", "õe": "oẽ", "ọe": "oẹ"
+		\ }
 	let wordlen = strcharlen(word)
 	let word_uy_part = strcharpart(word, wordlen - 2, 2)
-	if has_key(uy_dict, word_uy_part)
-		return strcharpart(word, 0, wordlen - 2) .. uy_dict[word_uy_part]
+	if has_key(tone_dict, word_uy_part)
+		return strcharpart(word, 0, wordlen - 2) .. tone_dict[word_uy_part]
 	else
 		return word
 	endif

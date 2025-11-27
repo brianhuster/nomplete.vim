@@ -1,9 +1,24 @@
 Execute (normalizing);
+	" Existing 'uy' cases
 	AssertEqual nomplete#normalize("tÙy"), "tuỳ"
 	AssertEqual nomplete#normalize("lụy"), "luỵ"
 	AssertEqual nomplete#normalize("THúy"), "thuý"
 	AssertEqual nomplete#normalize("thủY"), "thuỷ"
 	AssertEqual nomplete#normalize("LŨY"), "luỹ"
+
+	" Expanded 'oa' cases
+	AssertEqual nomplete#normalize("Hóa"), "hoá"
+	AssertEqual nomplete#normalize("hÒa"), "hoà"
+	AssertEqual nomplete#normalize("thỎa"), "thoả"
+	AssertEqual nomplete#normalize("XÕA"), "xoã"
+	AssertEqual nomplete#normalize("hỌa"), "hoạ"
+
+	" Expanded 'oe' cases
+	AssertEqual nomplete#normalize("LóE"), "loé"
+	AssertEqual nomplete#normalize("hÒe"), "hoè"
+	AssertEqual nomplete#normalize("KhỏE"), "khoẻ"
+	AssertEqual nomplete#normalize("nÕE"), "noẽ"
+	AssertEqual nomplete#normalize("CHỌE"), "choẹ"
 
 Execute (chuNom);
 	AssertEqual nomplete#quocNgu2chuNom("Việt"), ["越", "樾", "粵", "鉞", "戉"]
