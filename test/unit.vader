@@ -20,5 +20,8 @@ Execute (normalizing);
 	AssertEqual nomplete#normalize("nÕE"), "noẽ"
 	AssertEqual nomplete#normalize("CHỌE"), "choẹ"
 
+	" Test NFC normalization
+	AssertEqual nomplete#normalize("bấy"), "bấy"
+
 Execute (chuNom);
 	AssertEqual nomplete#quocNgu2chuNom("Việt"), ["越", "樾", "粵", "鉞", "戉"]

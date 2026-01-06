@@ -12,4 +12,4 @@ vader:
 	git clone --depth=1 https://github.com/junegunn/vader.vim.git || true
 
 test: vader
-	$(VIM_PATH) -Nu test/vimrc -c 'silent Vader! test/*' > $(NUL)
+	$(VIM_PATH) -Nu test/vimrc -c 'silent Vader! test/*'

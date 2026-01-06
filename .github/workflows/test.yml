@@ -11,8 +11,8 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          # - windows-latest
-          # - macos-latest
+          - windows-latest
+          - macos-latest
         editor_version:
           - '{"editor": "nvim", "version": "stable"}'
           - '{"editor": "nvim", "version": "nightly"}'
@@ -22,11 +22,21 @@ jobs:
     steps:
     - uses: actions/checkout@v5
 
+    - name: Install libutf8proc-dev on Linux
+      if: runner.os == 'Linux'
+      run: sudo apt update && sudo apt install -y libutf8proc-dev
+
     - name: Set up Neovim
       uses: rhysd/action-setup-vim@v1
       with:
         neovim: ${{ fromJSON(matrix.editor_version).editor == 'nvim' }}
         version: ${{ fromJSON(matrix.editor_version).version }}
+
+    - name: Set up Python for Windows Vim
+      if: runner.os == 'Windows' && fromJSON(matrix.editor_version).editor == 'vim'
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
 
     - name: Run tests
       run: make test VIM_PATH=${{ fromJSON(matrix.editor_version).editor }}

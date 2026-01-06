@@ -3,6 +3,8 @@ if exists('g:loaded_nomplete')
 endif
 let g:loaded_nomplete = 1
 
+set encoding=utf-8
+
 let s:data_file = expand("<script>:p:h:h") . '/dict.json'
 let s:chunom_dict = {}
 
@@ -11,12 +13,33 @@ func! s:load_data() abort
 		echoerr 'Không tìm thấy ' . s:data_file
 		return
 	endif
+
 	let json_text = readfile(s:data_file)->join("\n")
 	let s:chunom_dict = json_decode(json_text)
 endfunc
 
+func! s:utf8_normalize(str) abort
+	let str = a:str
+	let normalized = ''
+	if has('nvim') && luaeval("jit ~= nil")
+		let normalized = v:lua.require'nomplete'.utf8_normalize(str)
+	endif
+	if empty(normalized) && has("python3")
+		try
+			python3 import unicodedata
+			let normalized = py3eval("unicodedata.normalize('NFC', vim.eval('a:str'))")
+		catch
+			if v:testing
+				echoerr v:stacktrace
+			endif
+		endtry
+	endif
+	return normalized
+endfunc
+
 func! s:normalize(word) abort
 	let word = tolower(a:word)
+	let word = s:utf8_normalize(word) ?? word
 
 	let tone_dict = {
 		\ "úy": "uý", "ùy": "uỳ", "ủy": "uỷ", "ũy": "uỹ", "ụy": "uỵ",
