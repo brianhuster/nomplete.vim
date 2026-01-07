@@ -19,20 +19,13 @@ func! s:load_data() abort
 endfunc
 
 func! s:utf8_normalize(str) abort
-	let str = a:str
 	let normalized = ''
 	if has('nvim') && luaeval("jit ~= nil")
-		let normalized = v:lua.require'nomplete'.utf8_normalize(str)
+		let normalized = v:lua.require'nomplete'.utf8_normalize(a:str)
 	endif
 	if empty(normalized) && has("python3")
-		try
-			python3 import unicodedata
-			let normalized = py3eval("unicodedata.normalize('NFC', vim.eval('a:str'))")
-		catch
-			if v:testing
-				echoerr v:stacktrace
-			endif
-		endtry
+		python3 import unicodedata
+		let normalized = py3eval("unicodedata.normalize('NFC', vim.eval('a:str'))")
 	endif
 	return normalized
 endfunc

@@ -9,10 +9,10 @@ Bạn có thể cài đặt plugin này bằng bất kỳ trình quản lý plug
 ```vim
 Plug 'brianhuster/nomplete.vim'
 ```
-Không bắt buộc, nhưng khuyến nghị các phần mềm sau để plugin thực hiện chuẩn hóa Unicode:
-- Với người dùng Nvim với LuaJIT trên Windows hoặc macOS: bạn không cần làm gì thêm, mọi tính năng đều sẵn có
-- Với người dùng Nvim với LuaJIT trên Linux: hãy cài thư viện [utf8proc](https://github.com/JuliaStrings/utf8proc)
-- Với người dùng Vim hoặc Nvim không có LuaJIT, hoặc Nvim có LuaJIT nhưng bạn không muốn cài `utf8proc`, hãy đảm bảo trình soạn thảo của bạn hỗ trợ Python 3. Với người dùng Vim, xem `:h python-building`, với người dùng Nvim, xem `:h provider-python`
+Không bắt buộc, nhưng khuyến nghị một trong 2 điều sau:
+- Nvim hỗ trợ LuaJIT
+HOẶC
+- Vim/Nvim hỗ trợ `+python3`
 
 ### Cài đặt font chữ Nôm
 

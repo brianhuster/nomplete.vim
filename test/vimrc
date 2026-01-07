@@ -1,7 +1,8 @@
-if !has('nvim') && has('win32')
+if !has('nvim') && (has('win32') || has('win32unix'))
 	let &pythonthreedll = system("python test/get_dll.py")->trim()
 endif
 
 let v:testing = 1
 set rtp+=vader.vim
 set rtp+=.
+runtime! plugin/nomplete.vim

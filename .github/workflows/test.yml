@@ -22,10 +22,6 @@ jobs:
     steps:
     - uses: actions/checkout@v5
 
-    - name: Install libutf8proc-dev on Linux
-      if: runner.os == 'Linux'
-      run: sudo apt update && sudo apt install -y libutf8proc-dev
-
     - name: Set up Neovim
       uses: rhysd/action-setup-vim@v1
       with:
